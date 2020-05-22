@@ -1,6 +1,6 @@
 // Notes: 
 //      Varchar will not have a limit, in rust this means it will be hardcoded when compiled.
-//      Database will fit entirely into memory.
+//      This file contains meta command handling, CLI input and the high level while loop for the db.
 
 use std::io::{self, Read, Write};
 
@@ -9,6 +9,7 @@ mod table;
 
 use statements::ExecuteResult;
 use statements::PrepareResult;
+use statements::StatementType;
 use statements::prepare_statement;
 use statements::execute_statement;
 
@@ -34,12 +35,7 @@ impl InputBuffer{
     }
 }
 
-// Letting Rust do memory management instead of manually like the
-// original code.
-// Example:
-//      #define COLUMN_USERNAME_SIZE 32
-//      #define COLUMN_EMAIL_SIZE 32
-
+// TODO: Read up on the rust way of handling user inputs
 fn read_input() -> String {
     let mut input_buffer = InputBuffer {
         buffer: String::new(),
@@ -63,6 +59,7 @@ fn read_input() -> String {
     input_buffer.buffer
 }
 
+// Responsible for meta commands such as exit, new db, ect
 fn do_meta_command(command: &String) -> MetaCommandResult {
     match command.trim() {
         ".exit" => {
@@ -91,7 +88,8 @@ fn main() {
 
     while !done {
         print!("db > ");
-        //std::io::stdout().lock().flush();
+        std::io::stdout().flush().unwrap();
+
         let command = read_input();
 
         if command.trim().chars().next().unwrap() == '.' {
@@ -106,7 +104,7 @@ fn main() {
             }
         } 
 
-        let statement_status = prepare_statement(&command);
+        let statement_status: (PrepareResult, StatementType) = prepare_statement(&command);
 
         // Pattern matching PrepareResult enum
         match statement_status.0 {
@@ -133,7 +131,7 @@ fn main() {
             }
 
             PrepareResult::PrepareUnrecognizedStatement => {
-                println!("Unrecognized keyword at start of {}", command);
+                println!("Unrecognized keyword: {}", command);
                 continue;
             }
         };

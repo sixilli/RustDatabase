@@ -1,3 +1,7 @@
+// table.rs
+//      defining structs and implementations for tables, rows and maybe columns
+
+
 use serde::{Serialize, Deserialize};
 
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
