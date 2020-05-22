@@ -13,14 +13,11 @@ use statements::prepare_statement;
 use statements::execute_statement;
 
 use table::Table;
-use table::Row;
 
 enum MetaCommandResult {
     MetaCommandSuccess,
     MetaCommandUnrecognizedCommand
 }
-
-
 
 struct InputBuffer {
     buffer: String,

@@ -1,4 +1,7 @@
+use serde::{Deserialize};
+
 use crate::table::Table;
+use crate::table::Row;
 
 pub enum ExecuteResult{
     ExecuteSuccess,
@@ -32,10 +35,12 @@ pub fn execute_insert(table: &mut Table) -> ExecuteResult {
 }
 
 pub fn execute_select(table: &Table) -> ExecuteResult {
+
     for i in 0..table.rows.len() {
-        //let entry: Row = serde_json::from_str(row).unwrap();
-        println!("{:?}", table.rows[i]);
+        let decoded: Row = bincode::deserialize(&table.rows[i]).unwrap();
+        println!("{:?}", decoded);
     }
+
     ExecuteResult::ExecuteSuccess
 }
 
@@ -45,10 +50,6 @@ pub fn prepare_statement(command: &String) -> (PrepareResult, StatementType) {
 
     match parsed[0].to_lowercase().as_str() {
         "insert" => { 
-            let id: String = parsed[1].to_string(); //.parse::<u32>().unwrap();
-            let user: String = parsed[2].to_string();
-            let email: String = parsed[3].to_string();
-
             (prep, StatementType::StatementInsert)
             }
 
