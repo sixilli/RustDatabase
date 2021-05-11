@@ -11,6 +11,7 @@ pub struct Table {
     pub columns: Vec<String>,
     pub rows: Vec<Vec<u8>>
 }
+
 #[derive(Debug, Serialize, Deserialize, PartialEq)]
 pub struct Row {
     pub row_number: u32,
@@ -29,6 +30,8 @@ impl Table {
             email: "owo@somethingweeb.com".to_string()
         };
 
+        println!("{:?}", data);
+
         let encoded: Vec<u8> = bincode::serialize(&new_row).unwrap();
 
         self.rows.push(encoded);
@@ -36,3 +39,10 @@ impl Table {
     }
 }
 
+
+// dev branch(last few commits) -> only add last few commits to hotfix branch(lots of commits behind) -> dev branch
+
+// dev branch === hotfix branch
+
+ // # replay every commit *after* quickfix1 up to quickfix2 HEAD.
+ // git rebase --onto master quickfix1 quickfix2 

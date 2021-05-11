@@ -6,6 +6,7 @@ use std::io::{self, Read, Write};
 
 mod statements;
 mod table;
+mod data_structures;
 
 use statements::ExecuteResult;
 use statements::PrepareResult;
@@ -74,6 +75,7 @@ fn do_meta_command(command: &String) -> MetaCommandResult {
 }
 
 fn main() {
+    let dummy_btree = data_structures::build_btree();
     let dummy_columns: Vec<String> = vec!["Username".to_string(), "Email".to_string()];
 
     // Creating a test struct
@@ -126,7 +128,7 @@ fn main() {
             }
 
             PrepareResult::PrepareSyntaxError => {
-                println!("Syntax error. Could not parse statement");
+                println!("Syntax error. Could not parse statement: {}", command);
                 continue;
             }
 

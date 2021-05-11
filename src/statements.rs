@@ -19,7 +19,7 @@ pub enum StatementType {
 
 pub enum PrepareResult {
     PrepareSuccess,
-    //PrepareSyntaxError,
+    PrepareSyntaxError,
     PrepareUnrecognizedStatement
 }
 
@@ -68,11 +68,11 @@ pub fn execute_insert(table: &mut Table) -> ExecuteResult {
 
 // Works for now, eventually will need to return data
 pub fn execute_select(table: &Table) -> ExecuteResult {
-
     for i in 0..table.rows.len() {
         let decoded: Row = bincode::deserialize(&table.rows[i]).unwrap();
         println!("{:?}", decoded);
     }
+
     ExecuteResult::ExecuteSuccess
 }
 
